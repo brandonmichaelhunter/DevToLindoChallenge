@@ -1,0 +1,35 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Baseball Management System (BMS)</h1>
+        <p class="lead">
+            Baseball Management System is a software as a service (SaaS) that will provide your baseball organization 
+            with tools to help you manage the day to day operations of manage an single baseball club or a collection of baseball clubs.
+        </p>
+        <p>BMS provides the following tools to help meet your needs for managing any baseball club(s):
+            <ul>
+                <li>Manage your teams communication and collobration through an internal portal. Each team gets:
+                    <ul>
+                        <li>Each team will recieve public website along with a content management system to allow adminstrators to manage teams website content.</li>
+                        <li>Manage player's stats and tracking progress (Comming Soon!!!)</li>
+                        <li>Each team will be equiped with a secure messenger app that authorized users can use to talk to each other in real time.</li>
+                        <li>Game Tracker App that will allow fans to watch live games. (Comming Soon !!!)</li>
+                        <li>Stats Search engine for users to lookup players stats. (Comming Soon !!!)</li>
+
+                    
+                    </ul> 
+</li>
+                            </ul>
+        </p>
+        <hr class="my-4">
+        <p class="lead">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock content %}

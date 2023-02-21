@@ -1,0 +1,51 @@
+{% extends "users/base.html" %}
+{% block title %}{{PageTitle}}{% endblock title %}
+{% block content %}
+    
+    {% if team_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="form-content">
+        <form method="post" id="creategameform" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        {{form}}
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Create Game</button>
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+            <a href="{% url 'team-events' TeamID %}" class="btn btn-primary btn-lg">Go Back to Team Events</a>
+            <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Go Back to Teams</a>
+        </form>
+    </div>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#id_HomeTeam').attr('disabled','disabled')
+            $("#creategameform").submit(function (e) {
+                $('#id_HomeTeam').attr('disabled','')
+                //stop submitting the form to see the disabled button effect
+                
+    
+                return True;
+    
+            });
+        })
+    </script>
+   
+    {% endblock javascript %}
+{% endblock content %}

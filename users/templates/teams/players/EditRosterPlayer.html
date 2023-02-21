@@ -1,0 +1,39 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Player Roster{% endblock title %}
+{% block content %}
+
+    {% if team_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in Team_Roster_Form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="form-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Edit Player</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                    {{ Team_Roster_Form }}
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <button type="submit" class="btn btn-dark btn-lg">Update Player</button>
+                    <a href="{% url 'team-rosters' TeamID %}"  class="btn btn-primary btn-lg">Back Team Roster</a>
+                    <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

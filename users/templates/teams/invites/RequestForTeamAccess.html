@@ -1,0 +1,86 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Search Lookup - Request For Access{% endblock title %}
+{% block content %}
+    
+      <div class="form-content">
+       <div class="row">
+        <div class="col-sm-12"><h3>Request For Team Access</h3></div>
+        <div class="col-sm-12">
+        <form id="TeamSearch" method="POST">
+              {% csrf_token %}
+         <div class="col-sm-12">
+            
+                <div class="form-row">
+                   <div  class="form-group col-md-12"><label for="inputEmail4">Search by Team Name</label></div>
+                   <div  class="form-group col-md-12"><input type="text" class="form-control" id="SearchTeam" name="SearchTeam" placeholder="Type in team name"></div>
+                  </div>
+                </div>
+                
+               
+                <input type="submit" name="Search" class="btn btn-success btn-lg" />
+                {% comment %} <button type="submit" id="SearchRequest" name="SearchRequest" class="btn btn-primary">Search</button> {% endcomment %}
+              </form>
+         </div>
+         <div class="col-sm-12">
+          
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Requests </th>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">City</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Team Owner</th>
+    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                    {% for team in Teams %}
+                          
+                        <tr>
+                          <td>
+                            {% for userTeam in UserTeams %}
+                              {% if userTeam.AssignedTeam_id != team.TeamID %}
+
+                              <a href="{% url 'team-request-team-access-action' team.TeamID %}">Request For Team Access</a><br/>
+                              
+                              {% endif %}
+                            {% endfor %}  
+                          </td>
+                          <td>{{team.TeamName}}</td>
+                          <td>{{team.City}}</td>
+                          <td>{{team.State}}</td>
+                          <td>
+                            {% for owner in TeamOwners %}
+    
+                              {% if owner.AssignedTeam_id == team.TeamID %}
+                                 {% for user in SiteUsers %}
+                                    {% if user.id == owner.MemberUser_id  %}
+                                      {% if owner.TeamOwner == 1 %}
+                                         {{ user.first_name }} {{user.last_name}}
+                                      {% endif %}
+                                    {% endif %}
+                                 {% endfor %}
+                              {% endif %}
+                            {% endfor %}
+                          </td>
+                        </tr>
+                        
+                    {% endfor %}
+                </tbody>
+              </table>
+            
+         </div>
+        </form>
+        </div>
+        </div>
+      </div>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+
+    </script>
+    {% endblock javascript %}
+{% endblock content %}

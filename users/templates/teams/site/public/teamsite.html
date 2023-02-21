@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--Font awesome icons 
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"> -->
+  <link href="
+https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/{{website.SiteStyleOption}}/bootstrap.min.css
+" rel="stylesheet">
+    <title>{{website.SiteTitle}}</title>
+</head>
+<body>
+  <div class="container p-3 my-3">
+    <div class="row">
+      <div class="col-md-12">
+        <nav class="navbar navbar-expand-md navbar-light " style="background-color: #f0f5f5">
+          <img class="rounded-circle account-img" width=75 height=75 src="{{ website.HeaderImage.url }} " style="cursor: pointer;"/><h3>{{website.SiteTitle}}</h3>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ml-auto">
+                 
+                   
+                    
+                  
+                    <ul class="nav ">
+                      {% comment %} <li class="nav-item">
+                        <a class="nav-link active" href="#">Active</a>
+                      </li> {% endcomment %}
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Team
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          {% if website.ShowRoster == True %}
+                          <a class="dropdown-item" href="#">Roster</a>
+                          {% endif %}
+                          {% if website.ShowCoaches == True %}
+                          <a class="dropdown-item" href="#">Coaches</a>
+                          {% endif %}
+                          {% if website.ShowPlayerMedia == True %}
+                          <a class="dropdown-item" href="#">Team Media</a>
+                          {% endif %}
+                          {% if website.ShowGamesAndStats == True %}
+                          <a class="dropdown-item" href="#">Games and Stats</a>
+                          {% endif %}
+                          {% comment %} <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div> {% endcomment %}
+                      </li>
+                      <li class="nav-item">
+                        
+                      </li>
+                      <li class="nav-item">
+                        
+                      </li>
+                    </ul>
+
+                 
+
+                </div>
+            </div>
+        </nav>
+        <!--Any flash messages pop up in any page because this is the base template-->
+        <main>
+          <h1></h1>
+          <p class="fs-5 col-md-8">{{website.MissionStatement}}</p>
+      
+          
+      
+          <hr style="width:100%">
+      
+          <div class="row g-5">
+            <div class="col-md-6">
+              <h2>Team Links</h2>
+              <p>Provided below are import links for families and players should use as team resources</p>
+              <ul class="icon-list ps-0">
+                {% for link in links %}
+                <li class="d-flex align-items-start mb-1"><a href="{{link.Url}}" rel="noopener" target="_blank">{{link.LinkName}}</a></li>
+                {% endfor %}
+                
+                
+              </ul>
+            </div>
+      
+            <div class="col-md-6">
+              <h2>Team Documents and Forms</h2>
+              <p>Provided below are import documents and forms for families and players.</p>
+              <ul class="icon-list ps-0">
+                {% for document in documents %}
+                <li class="d-flex align-items-start mb-1"><a href="{{team_document_form.Document.Url}}">{{document.FileName}}</a></li>
+
+                {% endfor %}
+                
+              </ul>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- A plugin for password show/hide  -->
+    <script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+
+</body>
+</html>

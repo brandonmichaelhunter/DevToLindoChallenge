@@ -1,0 +1,30 @@
+ {% extends "users/base.html" %}
+{% block title %}Request Team Access{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+
+            
+        <form method="post" enctype="multipart/form-data">
+            <div class="alert " role="alert">
+                <div class="row">
+                    <div class="col-sm-12">What type of access are you requesting for team <strong>{{ TeamName }}</strong>?</div>
+                    <div class="col-sm-12">
+                    <button type="submit" id="fanaccess" name="fanaccess" class="btn btn-success btn-lg">Fan Access</button>
+                    <button type="submit" id="coachaccess" name="coachaccess" class="btn btn-info btn-lg">Coach Access</button>
+                    <a href="{% url 'team-invites-access' %}" class="btn btn-primary btn-lg">Back To Request Access</a>
+                    
+                    <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Back To Teams</a>
+                </div>
+                </div> 
+                
+                
+            </div>
+            {% csrf_token %}
+         
+
+            
+        </form>
+    </div>
+{% endblock content %} 

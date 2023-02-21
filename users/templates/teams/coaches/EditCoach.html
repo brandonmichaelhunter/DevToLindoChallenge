@@ -1,0 +1,38 @@
+{% extends "users/base.html" %}
+{% block title %}Edit Coach{% endblock title %}
+{% block content %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="form-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                    {{ form }}
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary btn-lg">Update Coach</button>
+                    <a href="{% url 'team-coaches' TeamID %}"  class="btn btn-primary btn-lg">Back Manage Team Coaches</a>
+                    <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

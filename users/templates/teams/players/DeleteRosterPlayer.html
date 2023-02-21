@@ -1,0 +1,18 @@
+{% extends "users/base.html" %}
+{% block title %}Delete Player{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+
+            
+        <form method="post" enctype="multipart/form-data">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                Are you sure you want to delete <strong>{{ PlayerFullName }}</strong> player? <button type="submit" class="btn btn-danger btn-lg">Remove Player</button>
+            </div>
+            {% csrf_token %}
+            <a href="{% url 'team-rosters' TeamID %}"  class="btn btn-primary btn-lg">Back Team Roster</a>
+            <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Back To Teams</a>
+        </form>
+    </div>
+{% endblock content %}

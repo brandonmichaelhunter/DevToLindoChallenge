@@ -1,0 +1,89 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+    <div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ team_form.TeamLogo.url }} " style="cursor: pointer;"/>
+    </div>
+    {% comment %} {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} {% endcomment %}
+    <div class="form-content">
+        <div class="row">
+            <div class="col-sm-2"><a href="{% url 'createteam' %}" class="btn btn-primary">Create a Team</a></div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Actions </th>
+                <th scope="col">Team Logo</th>
+                <th scope="col">Team Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">City, State</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                   {% for user in FanTeams %}
+                        {% if user.AssignedTeam_id == team.TeamID %}
+                            
+                            {% if user.MemberType == 'COACH' %}
+                                <tr>
+                                    <th scope="row">
+                                    
+                                    - <a href="{% url 'teamedit' user.AssignedTeam_id %}">Edit Team Profile</a><br/>
+                                    - <a href="{% url 'teamdelete' user.AssignedTeam_id %}">Remove Team</a><br/>
+                                    {% for site in sites %}
+                                        {% if site.TeamName.TeamID == user.AssignedTeam_id %}
+                                            - <a href="{% url 'website-edit' site.TeamWebsiteID %}">Manage Website</a> <br/>
+                                            - <a href="{% url 'publicteamsite' site.TeamWebsiteID %}">View Team Site</a> <br/>
+                                        {% endif %}
+                                    
+                                    {% endfor %}  
+                                    - <a href="{% url 'team-coaches' user.AssignedTeam_id %}">Manage Coaches</a><br/>
+                                    - <a href="{% url 'team-rosters' user.AssignedTeam_id %}">Manage Roster</a> <br/>
+                                    - <a href="{% url 'team-fans' user.AssignedTeam_id %}">Manage Parents</a><br/>
+                                    - <a href="{% url 'team-events' user.AssignedTeam_id %}">Team Events</a><br/>
+                                    </th>
+                                    <th scope="row"><img class="rounded-circle account-img" width=50 height=50 src="{{ team.TeamLogo.url }} " style="cursor: pointer;"/></th>
+                                    <th scope="row">{{ team.TeamName }}</th>
+                                    
+                                    <td>{{ team.PrimaryEmail }}</td>
+                                    <td>{{ team.PrimaryPhone }}</td>
+                                    <td>{{ team.City }},{{ team.State }} </td>
+                                </tr>
+                            {% elif user.MemberType == 'PARENT' %}
+                                <tr>
+                                    <th scope="row">
+                                    
+                                    {% for site in sites %}
+                                        {% if site.TeamName.TeamID == team.TeamID %}
+                                            - <a href="{% url 'publicteamsite' site.TeamWebsiteID %}">View  Team Site</a> <br/>
+                                        {% endif %}                   
+                                    {% endfor %}  
+                                    </th>
+                                    <th scope="row"><img class="rounded-circle account-img" width=50 height=50 src="{{ team.TeamLogo.url }} " style="cursor: pointer;"/></th>
+                                    <th scope="row">{{ team.TeamName }}</th>
+                                    
+                                    <td>{{ team.PrimaryEmail }}</td>
+                                    <td>{{ team.PrimaryPhone }}</td>
+                                    <td>{{ team.City }},{{ team.State }} </td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}  
+                {% endfor %}
+            </tbody>
+          </table>
+        
+    </div>
+{% endblock content %}

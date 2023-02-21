@@ -1,0 +1,135 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+    <div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ team_form.TeamLogo.url }} " style="cursor: pointer;"/>
+    </div>
+    {% if team_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in team_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="row">
+        <form method="post" style="width:100%" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="panel panel-default" style="width: 100%; padding: 10px; margin: 10px">
+            <div id="Tabs" role="tabpanel">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active" style="padding-right:5%"><a href="#teamedit" aria-controls="personal" role="tab" data-toggle="tab">Edit Website Content</a></li>
+                    <li  style="padding-right:5%"><a href="#publicsite" aria-controls="publicsite" role="tab" data-toggle="tab">Manage Websites Documents and Forms</a></li>
+                    <li  style="padding-right:5%"><a href="#internalsite" aria-controls="internalsite" role="tab" data-toggle="tab">Manage Websites Links</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content" style="padding-top: 20px">
+                    <div role="tabpanel" class="tab-pane active" id="teamedit">
+                        <h3>Edit Website Content and Images</h3>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="small mb-1">SiteTitle:</label>{{ website_form.SiteTitle }}
+                                    <label class="small mb-1">HeaderImage:</label>{{ website_form.HeaderImage }}
+                                    <label class="small mb-1">MissionStatement:</label>{{ website_form.MissionStatement }}
+                                    <label class="small mb-1">ShowRoster:</label>{{ website_form.ShowRoster }}
+                                    <label class="small mb-1">ShowCoaches:</label>{{ website_form.ShowCoaches }}
+                                    <label class="small mb-1">ShowPlayerMedia:</label>{{ website_form.ShowPlayerMedia }}
+                                    <label class="small mb-1">ShowGamesAndStats:</label>{{ website_form.ShowGamesAndStats }}
+                                    <label class="small mb-1">SiteStyleOptions:</label>{{ website_form.SiteStyleOption }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" name="websitecontent" value="websitecontent" class="btn btn-dark btn-lg">Save Changes</button>
+                        <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+                        <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="publicsite">
+                        <h3>Manage Websites Documents and Forms</h3>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="small mb-1">Document:</label>{{ website_document_form.Document }}
+                                    <label class="small mb-1">File Name:</label>{{ website_document_form.FileName }}
+                                    <label class="small mb-1">Show On Public Website:</label>{{ website_document_form.ShowOnPublicWebsite }}
+                                    <label class="small mb-1">Show On Internal Website:</label>{{ website_document_form.ShowOnInternalWebsite }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" name="websitedocuments"   value="websitedocuments"  class="btn btn-dark btn-lg">Save Changes</button>
+                        <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+                        <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+                        <div class="row">
+                            <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Document</th>
+                                    <th scope="col">Actions</th>
+                                    <th scope="col">Show on Public Site</th>
+                                    <th scope="col">Show on Internal Site</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for document in website_documents_list %}
+                                        <tr>
+                                            <th scope="row"><a href="{{document.Document.url}}">{{document.FileName}}</a></th>
+                                            <th scope="row"><a href="{% url 'website-editdelete-document' document.TeamDocumentID %}">Edit Document</a></th>
+                                            <th scope="row">{{ document.ShowOnPublicWebsite }}</th>
+                                                <th scope="row">{{ document.ShowOnInternalWebsite }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="internalsite">
+                        <h3>Manage Websites Links</h3>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="small mb-1">LinkName:</label>{{ website_link_form.LinkName }}
+                                    <label class="small mb-1">Url:</label>{{ website_link_form.Url }}
+                                    <label class="small mb-1">ShowOnPublicWebsite:</label>{{ website_link_form.ShowOnPublicWebsite }}
+                                    <label class="small mb-1">ShowOnInternalWebsite:</label>{{ website_link_form.ShowOnInternalWebsite }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" name="websitelinks"  value="websitelinks"  class="btn btn-dark btn-lg">Save Changes</button>
+                        <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+                        <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+                        <div class="row">
+                            <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Url</th>
+                                    <th scope="col">Link</th>
+                                    <th scope="col">Show on Public Site</th>
+                                    <th scope="col">Show on Internal Site</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for link in website_links_list %}
+                                        <tr>
+                                            <th scope="row"><a href="{{link.Url}}">{{link.LinkName}}</a></th>
+                                            <th scope="row"><a href="{% url 'website-editdelete-link' link.LinkID %}">Edit Link</a></th>
+                                            <th scope="row">{{link.ShowOnPublicWebsite}}</th>
+                                            <th scope="row">{{link.ShowOnInternalWebsite}}</th>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </form>
+        {% endblock content %}
+      
+
+    </div>

@@ -1,0 +1,162 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-3"><a href="{% url 'team-practice-create' TeamID%}" class="btn btn-primary">Create A Practice</a></div>
+    <div class="col-sm-3"><a href="{% url 'team-home-game-create' TeamID %}" class="btn btn-primary">Create A Home Game</a></div>
+    <div class="col-sm-3"><a href="{% url 'team-away-game-create' TeamID %}" class="btn btn-primary">Create A Away Game</a></div>
+    <div class="col-sm-3"><a href="{% url 'teams' %}" class="btn btn-primary">Return To Teams Page</a></div>
+  </div>
+    <div class="form-content">
+      <!-- START -->
+      
+      <div>
+        <div class="m-4">
+          <ul id="myTab" class="nav nav-tabs">
+              <li class="nav-item">
+                  <a href="#TeamPractice" class="nav-link " data-bs-toggle="tab">Team Practices ({{ TeamPracticesCount}})</a>
+              </li>
+              <li class="nav-item">
+                <a href="#HomeGames" class="nav-link" data-bs-toggle="tab">Team Home Games ({{ TeamHomeGamesCount}})</a>
+            </li>
+              <li class="nav-item">
+                  <a href="#AwayGames" class="nav-link  " data-bs-toggle="tab">Team Away Games ({{TeamAwayGamesCount}})</a>
+              </li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane fade show active" id="TeamPractice">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Actions </th>
+                        <th scope="col">Field Location</th>
+                        <th scope="col">Start DateTime</th>
+                        <th scope="col">End DateTime</th>
+                        <th scope="col">Notes</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for teamPractice in TeamPractices %}
+                        
+                          
+                        <tr >
+                            <th scope="row">
+                                {% if MembershipType == 'COACH' %}
+                                <a href="{% url 'team-practice' teamPractice.TeamPracticeID %}">Update Practice</a> 
+                                {% endif %}
+                              </th>
+
+                            <th scope="row">{{ teamPractice.FieldLocation}}</th>
+                            <th scope="row">{{ teamPractice.StartGameDateTime}}</th>
+                            <th scope="row">{{ teamPractice.EndGameDateTime }}</th>
+                            <th scope="row">{{ teamPractice.AdditionalInfo }}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+              <!-- Invites Sent From Me -->
+              <div class="tab-pane fade" id="HomeGames">
+                
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                        <th scope="col">Action</th>  
+                      <th scope="col">Opponent (Away)</th>
+                      <th scope="col">{{Teamname}} (Home)</th>
+                      <th scope="col">Start Date and Time</th>
+                      <th scope="col">End Date and Time (Estimated)</th>
+                      <th scope="col">Field Location</th>
+      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for game in TeamHomeGames %}
+                      
+                        
+                      <tr >
+                        <th scope="row">
+                            {% if MembershipType == 'COACH' %}
+                            <a href="{% url 'team-home-game-edit' game.TeamGameID %}">Manage Game Details</a><br/>
+                            <a href="">Manage Game Tracker (Comming Soon!!!)</a><br/>
+                            {% else %}
+                              <a href="">View Live Game (Comming Soon!!!)</a>
+                            {% endif %}
+                          </th>
+                        
+                          <th scope="row">{{ game.AwayTeam.TeamName}}</th>
+                          <th scope="row">{{ game.HomeTeam.TeamName}}</th>
+                          <th scope="row">{{ game.Start_Game_DateTime}}</th>
+                          <th scope="row">{{ game.End_Game_DateTime }}</th>
+                          <th scope="row">{{ game.Location }}, {{game.HomeTeam.City}}, {{game.HomeTeam.State}}</th>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+
+              <div class="tab-pane fade" id="AwayGames">
+                  {% comment %} <h4 class="mt-2">Profile tab content</h4> {% endcomment %}
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                          <th scope="col">Action</th>  
+                        <th scope="col">{{Teamname}} (Away)</th>
+                        <th scope="col">Oppenent (Home)</th>
+                        <th scope="col">Start Date and Time</th>
+                        <th scope="col">End Date and Time (Estimated)</th>
+                        <th scope="col">Field Location</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in TeamAwayGames %}
+                        
+                          
+                        <tr >
+                          <th scope="row">
+                              {% if MembershipType == 'COACH' %}
+                              <a href="{% url 'team-away-game-edit' game.TeamGameID %}">Manage Away Team Game Stats</a><br/> 
+                              <a href="">Manage Game Tracker (Comming Soon!!!)</a>
+                              {% else %}
+                              <a href="">View Live Game (Comming Soon!!!)</a>
+                              {% endif %}
+                            </th>
+                            <th scope="row">{{ game.AwayTeam.TeamName}}</th>
+                            <th scope="row">{{ game.HomeTeam.TeamName}}</th>
+                            <th scope="row">{{ game.Start_Game_DateTime}}</th>
+                            <th scope="row">{{ game.End_Game_DateTime }}</th>
+                            <th scope="row">{{ game.Location }}, {{game.AwayTeam.City}}, {{game.AwayTeam.State}}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+ 
+          </div>
+        </div>
+      </div>
+      <!-- END -->
+      </div>
+       
+
+        
+    </div>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        console.log('here')
+        $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function(e){
+            var activeTab = $(e.target).text(); // Get the name of active tab
+            var previousTab = $(e.relatedTarget).text(); // Get the name of previous active tab
+            //$(".active-tab span").html(activeTab);
+            //$(".previous-tab span").html(previousTab);
+        });
+    });
+    </script>
+    {% endblock javascript %}
+{% endblock content %}

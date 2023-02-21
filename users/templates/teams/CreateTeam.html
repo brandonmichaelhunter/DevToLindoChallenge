@@ -1,0 +1,56 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+    <div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ team_form.TeamLogo.url }} " style="cursor: pointer;"/>
+    </div>
+    {% if team_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in team_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Team Name:</label>
+                            {{ team_form.TeamName }}
+                        <label class="small mb-1">PrimaryEmail:</label>
+                            {{ team_form.PrimaryEmail }}
+                            <label class="small mb-1">SecondaryEmail:</label>
+                            {{ team_form.SecondaryEmail }}
+                            <label class="small mb-1">PrimaryPhone:</label>
+                            {{ team_form.PrimaryPhone }}
+                            <label class="small mb-1">SecondaryPhone:</label>
+                            {{ team_form.SecondaryPhone }}
+                            <label class="small mb-1">City:</label>
+                            {{ team_form.City }}
+                            <label class="small mb-1">State:</label>
+                            {{ team_form.State }}
+                            <label class="small mb-1">Zip:</label>
+                            {{ team_form.Zip }}
+                            <label class="small mb-1">SportType:</label>
+                            {{ team_form.SportType }}
+                            <label class="small mb-1">Season:</label>
+                            {{ team_form.Season }}
+                            <label class="small mb-1">TeamLogo:</label>
+                            {{ team_form.TeamLogo }}
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+            <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+        </form>
+    </div>
+{% endblock content %}

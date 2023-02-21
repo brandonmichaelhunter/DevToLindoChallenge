@@ -1,0 +1,28 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+
+            
+        <form method="post" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="small mb-1">Document:</label>{{ team_document_form.Document }}
+                        <label class="small mb-1">File Name:</label>{{ team_document_form.FileName }}
+                        <label class="small mb-1">Show On Public Website:</label>{{ team_document_form.ShowOnPublicWebsite }}
+                        <label class="small mb-1">Show On Internal Website:</label>{{ team_document_form.ShowOnInternalWebsite }}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" name="updatedocument"  value="updatedocument"  class="btn btn-dark btn-lg">Save Document Changes</button>
+            <button type="submit" name="deletedocument"  value="deletedocument"  class="btn btn-dark btn-lg">Delete Document</button>
+
+            <a href="{% url 'website-edit' TeamWebSiteID %}" class="btn btn-primary btn-lg">Return To Team Website Edit Page</a>
+        </form>
+    </div>
+{% endblock content %}

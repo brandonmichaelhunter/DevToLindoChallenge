@@ -1,0 +1,28 @@
+{% extends "users/base.html" %}
+{% block title %}Edit\Delete {{LinkName }} link{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+
+            
+        <form method="post" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="small mb-1">LinkName:</label>{{ team_link_form.LinkName }}
+                        <label class="small mb-1">Url:</label>{{ team_link_form.Url }}
+                        <label class="small mb-1">ShowOnPublicWebsite:</label>{{ team_link_form.ShowOnPublicWebsite }}
+                        <label class="small mb-1">ShowOnInternalWebsite:</label>{{ team_link_form.ShowOnInternalWebsite }}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" name="updatelink"  value="updatelink"  class="btn btn-dark btn-lg">Save Link Changes</button>
+            <button type="submit" name="deletelink"  value="deletelink"  class="btn btn-dark btn-lg">Delete Link</button>
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+            <a href="{% url 'website-edit' TeamWebSiteID %}" class="btn btn-primary btn-lg">Return To Team Website Edit Page</a>
+        </form>
+    </div>
+{% endblock content %}

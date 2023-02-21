@@ -1,0 +1,43 @@
+{% extends "users/base.html" %}
+{% block title %}Coaches{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+        <div class="row">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ invite_form }}
+            <button type="submit" class="btn btn-dark btn-lg">Invite a Coach</button>
+            <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Return to Teams Home</a>
+        </form>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Actions </th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Coach Title</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for coach in TeamCoaches %}
+
+                    <tr>
+                        <th scope="row">
+                        {% if IsTeamOwner == True %}
+                              <a href="{% url 'team-remove-coach' coach.TeamCoachID %}">Remove Coach</a><br/>
+                        {% endif %}
+                        <a href="{% url 'team-edit-coach' coach.TeamCoachID %}">Edit Coach Title</a>
+                    </th>
+                        <th scope="row">{{ coach.Coach.first_name }}</th>
+                        <th scope="row">{{ coach.Coach.last_name }}</th>
+                        <th scope="row">{{ coach.CoachTitle }}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        
+    </div>
+{% endblock content %}

@@ -1,0 +1,76 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Player Roster{% endblock title %}
+{% block content %}
+
+    {% if team_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in Team_Roster_Form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %} 
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        {% comment %} <label class="small mb-1">TeamMember:</label>
+                            {{ Team_Roster_Form.TeamMember }}
+                        <label class="small mb-1">ActiveMember:</label>
+                            {{ Team_Roster_Form.ActiveMember }}
+                            <label class="small mb-1">Position:</label>
+                            {{ Team_Roster_Form.Position }}
+                            <label class="small mb-1">JerseyNumber:</label>
+                            {{ Team_Roster_Form.JerseyNumber }} {% endcomment %}
+                            {{ Team_Roster_Form }}
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Add New Player</button>
+            {% comment %} <button type="submit"  class="btn btn-dark btn-lg">Import Roster From a Previous Season</button> {% endcomment %}
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+            <a href="{% url 'teams' %}" class="btn btn-primary btn-lg">Teams</a>
+        </form>
+        <hr />
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Actions </th>
+                <th scope="col">Player Image</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Middle Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Jersey</th>
+                <th scope="col">Throw</th>
+                <th scope="col">Bats</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for roster in TeamRoster %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{% url 'team-edit-roster' roster.TeamPlayerID %}">Edit Player</a><br/>
+                            <a href="{% url 'team-delete-roster' roster.TeamPlayerID %}">Remove Player</a><br/> 
+                        </th>
+                        <th scope="row"> <img class="rounded-circle account-img" width="75" height="75" src="{{ roster.ProfileImage.url }}" style="cursor: pointer;"/></th>
+                            <th scope="row">{{ roster.FirstName }}</th>
+                        <th scope="row">{{ roster.MiddleName }}</th>
+                        <th scope="row">{{ roster.LastName }}</th>
+                        <th scope="row">{{ roster.JerseyNumber }}</th>
+                        <th scope="row">{{ roster.ThrowingHand }}</th>
+                        <th scope="row">{{ roster.BattingHand }}</th>
+                        
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends "users/base.html" %}
+{% block title %}Request Team Access{% endblock title %}
+{% block content %}
+    
+
+    <div class="form-content">
+
+            
+        <form method="post" enctype="multipart/form-data">
+            <div class="alert " role="alert">
+                <div class="row">
+                    <div class="col-sm-12">Click the <button type="submit" id="ApproveAction" name="ApproveAction" class="btn btn-success btn-sm">Approve </button> button to grant {{Requester }} <strong>{{AccessRequest}}</strong> access to <strong>{{ TeamName }}</strong> site or</div>
+                    <div class="col-sm-12">Click the <button type="submit" id="RejectAction" name="RejectAction" class="btn btn-danger btn-sm">Reject</button> button to denied {{Requester }} <strong>{{AccessRequest}}</strong> access to <strong>{{ TeamName }}</strong> site</div> 
+                    <div class="col-sm-12">
+                    
+                    
+                    <a href="{% url 'team-invites' %}" class=" btn btn-link btn-primary btn-lg">Return To Invites Page</a>
+                    
+                    <a href="{% url 'teams' %}" class="btn btn-link btn-primary btn-lg">Return To Teams Page</a>
+                </div>
+                </div> 
+                
+                
+            </div>
+            {% csrf_token %}
+         
+
+            
+        </form>
+    </div>
+{% endblock content %} 

@@ -1,0 +1,193 @@
+{% extends "users/base.html" %}
+{% block title %}Teams Page{% endblock title %}
+{% block content %}
+
+
+    <div class="form-content">
+      <!-- START -->
+      <div>
+        <div class="m-4">
+          <ul id="myTab" class="nav nav-tabs">
+              <li class="nav-item">
+                  <a href="#home" class="nav-link active" data-bs-toggle="tab">Invite Requests Sent To Me({{ InvitesSentToMeListCount}})</a>
+              </li>
+              <li class="nav-item">
+                <a href="#myinvites" class="nav-link active" data-bs-toggle="tab">Invite Requests Sent From Me({{ InviteListCount}})</a>
+            </li>
+              <li class="nav-item">
+                  <a href="#profile" class="nav-link" data-bs-toggle="tab">My Approval Requests ({{ApprovalRequestsCount}})</a>
+              </li>
+              <li class="nav-item">
+                  <a href="#messages" class="nav-link" data-bs-toggle="tab">My Request For Team Access ({{RequestForApprovalsCount}})</a>
+              </li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane fade show active" id="home">
+                  {% comment %} <h4 class="mt-2">Home tab content</h4> {% endcomment %}
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Actions </th>
+                        <th scope="col">Requestor\Team Owner</th>
+                        <th scope="col">Membership Type</th>
+                        <th scope="col">Team Name</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">Status</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for invite in InvitesSentToMeList %}
+                        {% for ownership in MyTeamOwnership%}
+                          {% if invite.AssignedTeam_id == ownership.AssignedTeam_id%}
+                          
+                        <tr class="{{ invite.RequestStatus }}">
+                            <th scope="row">
+                                {% if invite.RequestStatus != 'APPROVED' %}
+                                <a href="{% url 'team-accept-invite' invite.TeamFanInviteRequest %}">Accept</a> | 
+                                <a href="{% url 'team-reject-invite' invite.TeamFanInviteRequest %}">Reject</a> 
+                                {% endif %}
+                              </th>
+                            <th scope="row">
+                                {% for owner in TeamOwners %}
+                                    {% if owner.AssignedTeam.TeamID == invite.AssignedTeam_id %}
+                                        {{ owner.MemberUser.first_name }} {{ owner.MemberUser.last_name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </th>
+                            <th scope="row">{{ invite.MemberType}}</th>
+                            <th scope="row">{{ invite.AssignedTeam.TeamName}}</th>
+                            <th scope="row">{{ invite.DateCreated }}</th>
+                            <th scope="row">{{ invite.RequestStatus }}</th>
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+              <!-- Invites Sent From Me -->
+              <div class="tab-pane fade" id="myinvites">
+                
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Invitee</th>
+                      <th scope="col">Membership Type</th>
+                      <th scope="col">Team Name</th>
+                      <th scope="col">Date Created</th>
+                      <th scope="col">Status</th>
+      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for invite in InviteList %}
+                      {% for ownership in MyTeamOwnership%}
+                        {% if invite.AssignedTeam_id == ownership.AssignedTeam_id%}
+                        
+                      <tr class="{{ invite.RequestStatus }}">
+                          <th scope="row">{{ invite.EmailContact}}</th>
+                          <th scope="row">{{ invite.MemberType}}</th>
+                          <th scope="row">{{ invite.AssignedTeam.TeamName}}</th>
+                          <th scope="row">{{ invite.DateCreated }}</th>
+                          <th scope="row">{{ invite.RequestStatus }}</th>
+                      </tr>
+                      {%endif%}
+                      {%endfor%}
+                      {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+
+              <div class="tab-pane fade" id="profile">
+                  {% comment %} <h4 class="mt-2">Profile tab content</h4> {% endcomment %}
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col"> </th>
+                        <th scope="col">Requestor</th>
+                        <th scope="col">Team</th>
+                        <th scope="col">Member Type</th>
+                        <th scope="col">Request Status</th>
+                        <th scope="col">Request Created</th>
+                        <th scope="col">Requested Modified</th>
+        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for AR in ApprovalRequests %}
+                       <tr class="{{ AR.RequestStatus }}">
+                            <th>
+                              {% if AR.RequestStatus == "PENDING" %}
+                              <a href="{% url 'team-approve-user-request' AR.AccessRequestQueueID %}" class="btn btn-success btn-sm">Approve\Request</a>
+                              {% comment %} <a href="{% url 'team-request-team-access-action' team.TeamID %}">Request For Team Access</a><br/> {% endcomment %}
+                              {% endif %}
+                            </th>
+                            <th>{{ AR.Requestor.first_name }} {{ AR.Requestor.last_name}}</th>
+                            <th>{{ AR.TeamRequested.TeamName}}</th>
+                            <th>{{ AR.MemberType }}</th>
+                            <th>{{ AR.RequestStatus }}</th>
+                            <th>{{ AR.DateTimeCreated }}</th>
+                            <th>{{ AR.DateTimeCreated }}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+              <div class="tab-pane fade" id="messages">
+                  {% comment %} <h4 class="mt-2">Messages tab content</h4> {% endcomment %}
+                  <a href="{% url 'team-invites-access' %}">Lookup Teams</a>
+                      <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th scope="col">Request Status </th>
+                              <th scope="col">Approver </th>
+                              <th scope="col">Team</th>
+                              <th scope="col">Member Type</th>
+                              <th scope="col">Request Created</th>
+                              <th scope="col">Requested Modified</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for req in RequestForApprovals %}
+                              
+                              <tr class="{{ req.RequestStatus }}">
+                                
+                                  <th>{{ req.RequestStatus}}</th>
+                                  <th>{{ req.Approver.first_name }} {{req.Approver.last_name}}</th>
+                                  <th>{{ req.TeamRequested.TeamName }}</th>
+                                  <th>{{ req.MemberType }}</th>
+                                  <th>{{ req.DateTimeCreated }} </th>
+                                  <th>{{ req.DateTimeModified }}</th>
+                                  
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- END -->
+      </div>
+       
+
+        
+    </div>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        console.log('here')
+        $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function(e){
+            var activeTab = $(e.target).text(); // Get the name of active tab
+            var previousTab = $(e.relatedTarget).text(); // Get the name of previous active tab
+            //$(".active-tab span").html(activeTab);
+            //$(".previous-tab span").html(previousTab);
+        });
+    });
+    </script>
+    {% endblock javascript %}
+{% endblock content %}
