@@ -27,8 +27,8 @@ from users.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('other/', include('other.urls')),
-    path('', include('users.urls')),
+    path('other/', include('other.urls')),
+    path('bms', include('users.urls')),
     path('login/', CustomLoginView.as_view(redirect_authenticated_user=True, template_name='users/login.html',
                                            authentication_form=LoginForm), name='login'),
 
